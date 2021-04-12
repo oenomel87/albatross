@@ -7,11 +7,6 @@ function getRoutes() {
   const userService = new UserService();
   const router = express.Router();
 
-  router.get('/', (req, res, next) => {
-    res.send('it works!');
-    next();
-  });
-
   router.post('/signup', async (req, res, next) => {
     const payload = req.body;
     const result = await userService.signUp(payload);

@@ -7,6 +7,10 @@ function getRoutes() {
 
   router.use('/user', getUserRoutes());
 
+  router.get('/', (req, res) => {
+    res.sendStatus(200);
+  });
+
   return router;
 }
 

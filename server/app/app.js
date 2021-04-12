@@ -1,6 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
 import logger from 'loglevel';
+import cors from 'cors';
 
 
 import { login, jwtAuthentication } from './config/auth/auth.js';
@@ -14,6 +15,7 @@ function startServer(port) {
 
   app.use(express.json())
   app.use(errorMiddleware);
+  app.use(cors());
   app.use(helmet());
 
   app.post('/login', (req, res) => login(req, res));
