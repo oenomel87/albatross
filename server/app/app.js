@@ -7,11 +7,13 @@ import cors from 'cors';
 import { login, jwtAuthentication } from './config/auth/auth.js';
 import { connectToMongo } from './config/mongo.js';
 import { getRoutes } from './routes.js';
+import UserService from './user/service.js';
 
 const jwtSecret = 'albatross';
 
 function startServer(port) {
   const app = express();
+  const userService = new UserService();
 
   app.use(express.json())
   app.use(errorMiddleware);
@@ -19,6 +21,15 @@ function startServer(port) {
   app.use(helmet());
 
   app.post('/login', (req, res) => login(req, res));
+  app.post('/signup', async (req, res, next) => {
+    const payload = req.body;
+    const result = await userService.signUp(payload);
+
+    if(typeof result === 'string') {
+      return res.status(500).send({ result: 'FAIL', message: result });
+    }
+    return res.sendStatus(200);
+  });
   app.use('/api', jwtAuthentication);
   app.use('/api', getRoutes());
 
