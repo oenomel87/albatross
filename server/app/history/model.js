@@ -12,3 +12,9 @@ const History = new Schema({
     default: Date.now
   }
 });
+
+History.statics.findByUserObjectId = function(objectId) {
+  return this.find({ user: objectId }).exec();
+}
+
+export default mongoose.model('history', History);
