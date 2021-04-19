@@ -9,9 +9,9 @@ function getRoutes() {
 
   router.post('/', async (req, res, next) => {
     try {
-      const { method, uri } = req.body;
+      const { header, method, uri, params } = req.body;
       logger.info(`request data - ${JSON.stringify(req.body)}`);
-      const response = await exploreService.explore(method, uri);
+      const response = await exploreService.explore(header, method, uri, params);
       res.send(response);
     } catch(err) {
       res.status(500).send(err.message);

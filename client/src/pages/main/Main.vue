@@ -1,17 +1,17 @@
 <template>
   <div class="main-wrapper">
-    <APIForm />
+    <Explore />
   </div>
 </template>
 
 <script>
-import APIForm from './APIForm.vue';
+import Explore from './explore/Explore.vue';
 
 export default {
   name: 'Main',
 
   components: {
-    APIForm
+    Explore
   }
 }
 </script>

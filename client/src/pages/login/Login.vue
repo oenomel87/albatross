@@ -19,6 +19,7 @@
 import axios from 'axios';
 
 import { setAuthToken, resetAuthToken } from '../../helper/auth-helper.js';
+import globalConfig from '../../config.js';
 
 export default {
   name: 'Login',
@@ -42,7 +43,7 @@ export default {
       resetAuthToken();
 
       try {
-        const result = await axios.post('http://localhost:9999/login', this.user);
+        const result = await axios.post(`${globalConfig.apiServer}/login`, this.user);
 
         if(result.status === 200 && result.data.token) {
           setAuthToken(result.data.token);
