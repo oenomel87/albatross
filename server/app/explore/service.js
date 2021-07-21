@@ -1,5 +1,6 @@
 import logger from 'loglevel';
-import axios from 'axios';
+import got from 'got';
+import decompressResponse from 'decompress-response';
 
 const defaultHeader = {
   'Cache-Control': 'no-cache',
@@ -18,19 +19,19 @@ export default class ExploreService {
 
       const headers = { ...defaultHeader, ...header };
 
-      const config = {
+      const options = {
         method,
-        url: uri,
         headers
       }
       if(params) {
-        config['params'] = params;
+        options['searchParams'] = params;
       }
 
-      const request = await axios.request(config);
-      const response = request.data;
-      
-      return response;
+      const response = await got(uri, options)
+      return {
+        headers: response.headers,
+        body: response.body
+      };
     } catch (err) {
       logger.error(err);
       throw new Error('요청을 처리할 수 없습니다.');

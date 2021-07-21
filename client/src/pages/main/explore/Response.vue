@@ -37,7 +37,24 @@ export default {
 
   computed: {
     responseData() {
-      return this.result == null ? '' : this.result.data;
+      let html = '';
+      if(this.result == null) {
+        return '';
+      }
+
+      try {
+        if(this.result?.headers && this.result?.headers['content-type'].indexOf('json') >= 0) {
+           html = JSON.stringify(JSON.parse(this.result.data.body), undefined, 4);
+        } else {
+          html = this.result == null ? '' : this.result.data;
+        }
+      } catch (err) {
+        console.warn(err.message);
+        return '';
+      }
+      
+      const lines = html.split('\n');
+      return lines.map(line => `<span>${line}</span>`).join('');
     }
   }
 }
@@ -46,10 +63,28 @@ export default {
 <style scope>
 .response-container {
   margin: 2vh 0;
+  border: 1px solid #d9d9d9;
 }
 
 .response-container pre {
-max-height: 30vh;
+  max-height: 30vh;
   overflow-y: auto;
+  line-height: 0;
+  counter-reset: line;
+}
+
+.response-container pre span {
+    display: block;
+    line-height: 1.5rem;
+}
+    
+.response-container pre span:before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  border-right: 1px solid #ddd;
+  padding: 0 .5em;
+  margin-right: .5em;
+  color: #888
 }
 </style>

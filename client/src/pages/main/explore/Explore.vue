@@ -70,7 +70,7 @@ export default {
       } catch (err) {
         console.error(err.message);
         this.error = err.message;
-        this.response = {};
+        this.response = null;
       }
     },
 
